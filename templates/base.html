@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Nextgen Shield — Stationery{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <div class="side-top">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Nextgen Shield">
+        <h1>NEXTGEN SHIELD</h1>
+        <p>Stationery Management</p>
+      </div>
+
+      {% if current_user %}
+      <nav class="side-links">
+        <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}on{% endif %}">Stock & Issues</a>
+        {% if current_user.role == 'manager' %}
+        <a href="{{ url_for('members') }}" class="{% if request.endpoint == 'members' %}on{% endif %}">Members</a>
+        <a href="{{ url_for('logs') }}" class="{% if request.endpoint == 'logs' %}on{% endif %}">Activity Log</a>
+        {% endif %}
+      </nav>
+
+      <div class="side-foot">
+        <div class="who">{{ current_user.full_name }}</div>
+        <div class="role">{{ roles[current_user.role] }}</div>
+        <a href="{{ url_for('logout') }}">Sign out</a>
+      </div>
+      {% endif %}
+    </aside>
+
+    <div class="work">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</body>
+</html>

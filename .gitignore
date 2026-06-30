@@ -1,0 +1,21 @@
+# Database & secrets (live data stays local)
+data/inventory.db
+data/*.db
+inventory.db
+data/.secret
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Java build output
+java/build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Old / duplicate assets
+static/logo.jpg

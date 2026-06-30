@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Activity Log — Nextgen Shield{% endblock %}
+{% block content %}
+<div class="pg-title">
+  <h2>Activity log</h2>
+  <p>Who changed what, and when.</p>
+</div>
+
+<section class="panel">
+  <div class="panel-title">All activity</div>
+  <div class="panel-inner">
+    {% if entries %}
+    <div class="tbl-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>When</th>
+            <th>Who</th>
+            <th>Role</th>
+            <th>Action</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in entries %}
+          <tr>
+            <td class="muted">{{ row.created_at[:16].replace('T', ' ') }}</td>
+            <td>{{ row.full_name }}</td>
+            <td><span class="tag">{{ roles[row.role] }}</span></td>
+            <td><span class="tag-mono">{{ row.action }}</span></td>
+            <td>{{ row.details }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="empty">Nothing logged yet.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

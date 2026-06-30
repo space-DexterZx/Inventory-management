@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Members — Nextgen Shield{% endblock %}
+{% block content %}
+<div class="pg-title">
+  <h2>Members</h2>
+  <p>People who can log in to this system.</p>
+</div>
+
+<section class="panel">
+  <div class="panel-title">Current team</div>
+  <div class="panel-inner">
+    {% if members %}
+    <div class="tbl-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Role</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for member in members %}
+          <tr>
+            <td>{{ member.full_name }}{% if member.id == current_user.id %} <span class="muted">(you)</span>{% endif %}</td>
+            <td>{{ member.username }}</td>
+            <td><span class="tag">{{ roles[member.role] }}</span></td>
+            <td>
+              {% if member.id != current_user.id %}
+              <form method="post" onsubmit="return confirm('Remove this person?');">
+                <input type="hidden" name="action" value="remove">
+                <input type="hidden" name="id" value="{{ member.id }}">
+                <button type="submit" class="btn btn-sm btn-red">Remove</button>
+              </form>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="empty">No members.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-title">Add someone</div>
+  <div class="panel-inner">
+    <form method="post" class="member-grid">
+      <input type="hidden" name="action" value="add">
+      <div class="field">
+        <label>Full name</label>
+        <input type="text" name="full_name" required>
+      </div>
+      <div class="field">
+        <label>Username</label>
+        <input type="text" name="username" required>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" name="password" required>
+      </div>
+      <div class="field">
+        <label>Role</label>
+        <select name="role" required>
+          <option value="executive">Executive Administration</option>
+          <option value="manager">Manager</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-gold">Add member</button>
+    </form>
+  </div>
+</section>
+{% endblock %}
